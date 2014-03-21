@@ -4,21 +4,39 @@
 <array>
 	<dict>
 		<key>name</key>
-		<string>a</string>
-		<key>img</key>
-		<string>a</string>
+		<string>b</string>
+		<key>width</key>
+		<string>20</string>
+		<key>ascent</key>
+		<string>20</string>
+		<key>descent</key>
+		<string>0</string>
+		<key>image</key>
+		<string>b.png</string>
 	</dict>
 	<dict>
 		<key>name</key>
-		<string>b</string>
-		<key>img</key>
-		<string>b</string>
+		<string>a</string>
+		<key>width</key>
+		<string>20</string>
+		<key>ascent</key>
+		<string>20</string>
+		<key>descent</key>
+		<string>0</string>
+		<key>image</key>
+		<string>a.png</string>
 	</dict>
 	<dict>
 		<key>name</key>
 		<string>asd</string>
-		<key>img</key>
-		<string>asd</string>
+		<key>width</key>
+		<string>20</string>
+		<key>ascent</key>
+		<string>20</string>
+		<key>descent</key>
+		<string>0</string>
+		<key>image</key>
+		<string>asd.png</string>
 	</dict>
 </array>
 </plist>

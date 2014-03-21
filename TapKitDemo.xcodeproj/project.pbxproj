@@ -24,6 +24,9 @@
 		BCBBF9FF18DBF3190083ED02 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCBBF9FE18DBF3190083ED02 /* CoreText.framework */; };
 		BCBBFA0118DBF3450083ED02 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCBBFA0018DBF3450083ED02 /* QuartzCore.framework */; };
 		BCBBFA4518DC1F600083ED02 /* emotion.plist in Resources */ = {isa = PBXBuildFile; fileRef = BCBBFA4418DC1F600083ED02 /* emotion.plist */; };
+		BCBBFA4918DC33A20083ED02 /* a.png in Resources */ = {isa = PBXBuildFile; fileRef = BCBBFA4618DC33A20083ED02 /* a.png */; };
+		BCBBFA4A18DC33A20083ED02 /* b.png in Resources */ = {isa = PBXBuildFile; fileRef = BCBBFA4718DC33A20083ED02 /* b.png */; };
+		BCBBFA4B18DC33A20083ED02 /* asd.png in Resources */ = {isa = PBXBuildFile; fileRef = BCBBFA4818DC33A20083ED02 /* asd.png */; };
 		BCC6CEE117171466000A99CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC6CEE017171466000A99CB /* main.m */; };
 		BCC6CEE517171466000A99CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC6CEE417171466000A99CB /* AppDelegate.m */; };
 		BCC6CEF5171714D5000A99CB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCC6CEF2171714D5000A99CB /* Default-568h@2x.png */; };
@@ -83,6 +86,9 @@
 		BCBBF9FE18DBF3190083ED02 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		BCBBFA0018DBF3450083ED02 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BCBBFA4418DC1F600083ED02 /* emotion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = emotion.plist; sourceTree = "<group>"; };
+		BCBBFA4618DC33A20083ED02 /* a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = a.png; sourceTree = "<group>"; };
+		BCBBFA4718DC33A20083ED02 /* b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b.png; sourceTree = "<group>"; };
+		BCBBFA4818DC33A20083ED02 /* asd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = asd.png; sourceTree = "<group>"; };
 		BCC6CED117171466000A99CB /* TapKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TapKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCC6CEDC17171466000A99CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BCC6CEE017171466000A99CB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -286,6 +292,9 @@
 				BC768DE41745F48000F23945 /* TTMainViewController.m */,
 				BCBBF9FA18DBF1F20083ED02 /* TTTAttributedLabel.h */,
 				BCBBF9FB18DBF1F20083ED02 /* TTTAttributedLabel.m */,
+				BCBBFA4618DC33A20083ED02 /* a.png */,
+				BCBBFA4718DC33A20083ED02 /* b.png */,
+				BCBBFA4818DC33A20083ED02 /* asd.png */,
 				BCBBFA4418DC1F600083ED02 /* emotion.plist */,
 				BCC6CEFF1717182B000A99CB /* TapKit */,
 				BCC6CEF1171714D5000A99CB /* Images */,
@@ -378,10 +387,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCBBFA4A18DC33A20083ED02 /* b.png in Resources */,
 				BCC6CEF5171714D5000A99CB /* Default-568h@2x.png in Resources */,
 				BCBBFA4518DC1F600083ED02 /* emotion.plist in Resources */,
+				BCBBFA4918DC33A20083ED02 /* a.png in Resources */,
 				BCC6CEF6171714D5000A99CB /* Default.png in Resources */,
 				BCC6CEF7171714D5000A99CB /* Default@2x.png in Resources */,
+				BCBBFA4B18DC33A20083ED02 /* asd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

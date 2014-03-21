@@ -797,6 +797,36 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
             CGContextSetTextPosition(c, lineOrigin.x, lineOrigin.y - descent - self.font.descender);
             CTLineDraw(line, c);
         }
+        
+        // Draw image for this line
+        
+        NSArray *runList = (__bridge NSArray *)(CTLineGetGlyphRuns(line));
+        for ( int i=0; i<[runList count]; ++i ) {
+            
+            CTRunRef runRef = (__bridge CTRunRef)([runList objectAtIndex:i]);
+            
+            CGRect runBounds = CGRectZero;
+            CGFloat runAscent = 0.0;
+            CGFloat runDescent = 0.0;
+            
+            NSDictionary *attributes = (__bridge NSDictionary *)(CTRunGetAttributes(runRef));
+            //NSInteger superscriptStyle = [[attributes objectForKey:(id)kCTSuperscriptAttributeName] integerValue];
+            
+            runBounds.size.width = CTRunGetTypographicBounds(runRef, CFRangeMake(0, 0), &runAscent, &runDescent, NULL);
+            runBounds.size.height = runAscent + runDescent;
+            
+            CGFloat xOffset = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(runRef).location, NULL);
+            runBounds.origin.x = lineOrigin.x + xOffset;
+            runBounds.origin.y = lineOrigin.y;
+            runBounds.origin.y -= runDescent;
+            
+            CTRunDelegateRef delegateRef = (__bridge CTRunDelegateRef)([attributes valueForKey:(id)kCTRunDelegateAttributeName]);
+            id refCon = (__bridge id)(CTRunDelegateGetRefCon( delegateRef ));
+            if ( refCon ) {
+                runBounds.origin.y = rect.size.height - runBounds.origin.y - runBounds.size.height;
+                [self drawImage:(NSDictionary *)refCon inRect:runBounds];
+            }
+        }
     }
 
     [self drawStrike:frame inRect:rect context:c];
@@ -970,6 +1000,27 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
 
         lineIndex++;
     }
+}
+
+- (void)drawImage:(NSDictionary *)brick inRect:(CGRect)rect
+{
+    NSString *imageName = [brick objectForKey:@"image"];
+    NSString *imagePath = [[NSBundle mainBundle] pathForResource:imageName ofType:nil];
+    UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
+    
+    CGContextRef contextRef = UIGraphicsGetCurrentContext();
+    
+    
+    CGContextSaveGState(contextRef);
+    
+    CGContextSetTextMatrix(contextRef, CGAffineTransformIdentity);
+    CGContextTranslateCTM(contextRef, 0, self.bounds.size.height);
+    CGContextScaleCTM(contextRef, 1.0, -1.0);
+    
+    CGContextClearRect(contextRef, rect);
+    CGContextDrawImage(contextRef, rect, image.CGImage);
+    
+    CGContextRestoreGState(contextRef);
 }
 
 
