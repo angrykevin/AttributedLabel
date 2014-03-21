@@ -71,6 +71,21 @@ typedef UILineBreakMode TTTLineBreakMode;
 #endif
 
 
+/* Callbacks */
+static void deallocCallback( void *ref ){
+    if ( ref ) { CFRelease(ref); }
+}
+static CGFloat ascentCallback( void *ref ){
+    return [[(__bridge NSDictionary *)ref objectForKey:@"ascent"] floatValue];
+}
+static CGFloat descentCallback( void *ref ){
+    return [[(__bridge NSDictionary *)ref objectForKey:@"descent"] floatValue];
+}
+static CGFloat widthCallback( void *ref ){
+    return [[(__bridge NSDictionary *)ref objectForKey:@"width"] floatValue];
+}
+
+
 static inline CTTextAlignment CTTextAlignmentFromTTTTextAlignment(TTTTextAlignment alignment) {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
   switch (alignment) {
@@ -145,6 +160,7 @@ static inline CGFLOAT_TYPE CGFloat_round(CGFLOAT_TYPE cgfloat) {
     return roundf(cgfloat);
 #endif
 }
+
 
 static inline NSDictionary * NSAttributedStringAttributesFromLabel(TTTAttributedLabel *label) {
     NSMutableDictionary *mutableAttributes = [NSMutableDictionary dictionary];
@@ -956,6 +972,72 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     }
 }
 
+
+#pragma mark -
+
+- (NSAttributedString *)parseMarkup:(NSAttributedString *)markup
+{
+    NSString *text = [markup string];
+    NSUInteger length = [text length];
+    if ( length<=0 ) {
+        return markup;
+    }
+    
+    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"\\[[^\\[\\]]*\\]"
+                                                                      options:NSRegularExpressionCaseInsensitive|NSRegularExpressionDotMatchesLineSeparators
+                                                                        error:nil];
+    NSArray *chunks = [regex matchesInString:text
+                                     options:0
+                                       range:NSMakeRange(0, length)];
+    if ( [chunks count]<=0 ) {
+        return markup;
+    }
+    
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithAttributedString:markup];
+    
+    for ( int i=[chunks count]-1; i>=0; --i ) {
+        NSTextCheckingResult *chunk = [chunks objectAtIndex:i];
+        NSString *result = [text substringWithRange:[chunk range]];
+        if ([result hasPrefix:@"["]
+            && [result hasSuffix:@"]"]
+            && ([result length]>2))
+        {
+            NSString *name = [result substringWithRange:NSMakeRange(1, [result length]-2)];
+            NSDictionary *brick = [self imageBrickForName:name];
+            if ( brick ) {
+                CTRunDelegateCallbacks callbacks;
+                callbacks.version = kCTRunDelegateVersion1;
+                callbacks.dealloc = deallocCallback;
+                callbacks.getAscent = ascentCallback;
+                callbacks.getDescent = descentCallback;
+                callbacks.getWidth = widthCallback;
+                
+                NSDictionary *attr = [brick copy];
+                
+                CTRunDelegateRef delegateRef = CTRunDelegateCreate(&callbacks, ((__bridge_retained void *)attr));
+                NSDictionary *attributeDictionary = [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)delegateRef, (NSString *)kCTRunDelegateAttributeName, nil];
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@" " attributes:attributeDictionary];
+                [string replaceCharactersInRange:[chunk range] withAttributedString:attributedString];
+                CFRelease(delegateRef);
+            }
+        }
+    }
+    
+    return string;
+    
+}
+
+- (NSDictionary *)imageBrickForName:(NSString *)name
+{
+    for ( NSDictionary *brick in self.imageBricks ) {
+        if ( [[brick objectForKey:@"name"] isEqualToString:name] ) {
+            return brick;
+        }
+    }
+    return nil;
+}
+
 #pragma mark - TTTAttributedLabel
 
 - (void)setText:(id)text {
@@ -965,8 +1047,13 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
         [self setText:text afterInheritingLabelAttributesAndConfiguringWithBlock:nil];
         return;
     }
-
-    self.attributedText = text;
+    
+    if ( (self.ignoreImage) || ([self.imageBricks count]<=0) ) {
+        self.attributedText = text;
+    } else {
+        self.attributedText = [self parseMarkup:text];
+    }
+    
     self.activeLink = nil;
 
     self.links = [NSArray array];

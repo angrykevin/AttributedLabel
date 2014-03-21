@@ -21,6 +21,9 @@
 		BC768DE51745F48000F23945 /* TTMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC768DE41745F48000F23945 /* TTMainViewController.m */; };
 		BC9C2E07174B5E05003829C9 /* TKURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9C2E06174B5E05003829C9 /* TKURLConnectionOperation.m */; };
 		BCBBF9FC18DBF1F20083ED02 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = BCBBF9FB18DBF1F20083ED02 /* TTTAttributedLabel.m */; };
+		BCBBF9FF18DBF3190083ED02 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCBBF9FE18DBF3190083ED02 /* CoreText.framework */; };
+		BCBBFA0118DBF3450083ED02 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCBBFA0018DBF3450083ED02 /* QuartzCore.framework */; };
+		BCBBFA4518DC1F600083ED02 /* emotion.plist in Resources */ = {isa = PBXBuildFile; fileRef = BCBBFA4418DC1F600083ED02 /* emotion.plist */; };
 		BCC6CEE117171466000A99CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC6CEE017171466000A99CB /* main.m */; };
 		BCC6CEE517171466000A99CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC6CEE417171466000A99CB /* AppDelegate.m */; };
 		BCC6CEF5171714D5000A99CB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCC6CEF2171714D5000A99CB /* Default-568h@2x.png */; };
@@ -77,6 +80,9 @@
 		BC9C2E06174B5E05003829C9 /* TKURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKURLConnectionOperation.m; sourceTree = "<group>"; };
 		BCBBF9FA18DBF1F20083ED02 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
 		BCBBF9FB18DBF1F20083ED02 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
+		BCBBF9FE18DBF3190083ED02 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		BCBBFA0018DBF3450083ED02 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		BCBBFA4418DC1F600083ED02 /* emotion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = emotion.plist; sourceTree = "<group>"; };
 		BCC6CED117171466000A99CB /* TapKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TapKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCC6CEDC17171466000A99CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BCC6CEE017171466000A99CB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -123,6 +129,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCBBFA0118DBF3450083ED02 /* QuartzCore.framework in Frameworks */,
+				BCBBF9FF18DBF3190083ED02 /* CoreText.framework in Frameworks */,
 				BC1EB6AA174CAF62009B5D76 /* MobileCoreServices.framework in Frameworks */,
 				BCD4FE77172ACC6A00A7E0A3 /* CoreGraphics.framework in Frameworks */,
 				BC71DACD1741E86D00FDA163 /* libsqlite3.dylib in Frameworks */,
@@ -257,6 +265,8 @@
 		BCC6CED317171466000A99CB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BCBBFA0018DBF3450083ED02 /* QuartzCore.framework */,
+				BCBBF9FE18DBF3190083ED02 /* CoreText.framework */,
 				BCC6CEFA17171537000A99CB /* Foundation.framework */,
 				BCC6CEF817171531000A99CB /* UIKit.framework */,
 				BCD4FE78172ACC7500A7E0A3 /* Dependencies */,
@@ -276,6 +286,7 @@
 				BC768DE41745F48000F23945 /* TTMainViewController.m */,
 				BCBBF9FA18DBF1F20083ED02 /* TTTAttributedLabel.h */,
 				BCBBF9FB18DBF1F20083ED02 /* TTTAttributedLabel.m */,
+				BCBBFA4418DC1F600083ED02 /* emotion.plist */,
 				BCC6CEFF1717182B000A99CB /* TapKit */,
 				BCC6CEF1171714D5000A99CB /* Images */,
 			);
@@ -368,6 +379,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCC6CEF5171714D5000A99CB /* Default-568h@2x.png in Resources */,
+				BCBBFA4518DC1F600083ED02 /* emotion.plist in Resources */,
 				BCC6CEF6171714D5000A99CB /* Default.png in Resources */,
 				BCC6CEF7171714D5000A99CB /* Default@2x.png in Resources */,
 			);

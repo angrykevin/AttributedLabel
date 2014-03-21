@@ -364,6 +364,20 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 - (void)addLinkToTransitInformation:(NSDictionary *)components
                           withRange:(NSRange)range;
 
+///-------------------
+/// @name Inline image
+///-------------------
+
+@property (nonatomic, assign) BOOL ignoreImage;
+
+@property (nonatomic, strong) NSArray *imageList;
+
+@property (nonatomic, strong) CALayer *imageLayer;
+
+@property (nonatomic, weak) NSArray *imageBricks;
+
+- (NSAttributedString *)parseMarkup:(NSAttributedString *)markup;
+
 @end
 
 /**

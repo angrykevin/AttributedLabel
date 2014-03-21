@@ -30,6 +30,19 @@
   [button addTarget:self action:@selector(doit3:) forControlEvents:UIControlEventTouchUpInside];
   [self.view addSubview:button];
   
+    
+    NSString *path = TKPathForBundleResource(nil, @"emotion.plist");
+    NSArray *array = [[NSArray alloc] initWithContentsOfFile:path];
+    
+    _label = [[TTTAttributedLabel alloc] init];
+    _label.frame = CGRectMake(10.0, 30.0, 300.0, 200.0);
+    _label.imageBricks = array;
+    [self.view addSubview:_label];
+    [_label showBorderWithBlueColor];
+    
+    _label.text = @"HA[a]HE[b]HO";
+    
+    
 }
 
 

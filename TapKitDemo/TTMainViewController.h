@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "TTTAttributedLabel.h"
 
 @interface TTMainViewController : UIViewController {
+    
+    TTTAttributedLabel *_label;
+    
 }
 
 @end
