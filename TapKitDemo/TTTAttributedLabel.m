@@ -824,12 +824,35 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
             id refCon = (__bridge id)(CTRunDelegateGetRefCon( delegateRef ));
             if ( refCon ) {
                 runBounds.origin.y = rect.size.height - runBounds.origin.y - runBounds.size.height;
-                [self drawImage:(NSDictionary *)refCon inRect:runBounds];
+                if ( self.tmp==nil ) {
+                    self.tmp = [[NSMutableArray alloc] init];
+                }
+                NSDictionary *dict = @{ @"ref": refCon, @"rect": NSStringFromCGRect(runBounds) };
+                [self.tmp addObject:dict];
+                //[self drawImage:(NSDictionary *)refCon inRect:runBounds];
             }
         }
     }
 
     [self drawStrike:frame inRect:rect context:c];
+    
+    
+    if ( self.imageLayer ) {
+        [self.imageLayer removeAllAnimations];
+        [self.imageLayer removeFromSuperlayer];
+        self.imageLayer = nil;
+    }
+    self.imageLayer = [CALayer layer];
+    self.imageLayer.contentsScale = [UIScreen mainScreen].scale;
+    self.imageLayer.frame = self.bounds;
+    self.imageLayer.backgroundColor = [[UIColor clearColor] CGColor];
+    [self.layer addSublayer:self.imageLayer];
+    
+    for ( NSDictionary *dict in self.tmp ) {
+        NSDictionary *ref = [dict objectForKey:@"ref"];
+        CGRect rect = CGRectFromString([dict objectForKey:@"rect"]);
+        [self drawImage:ref inRect:rect];
+    }
 
     CFRelease(frame);
     CFRelease(path);
@@ -1008,19 +1031,27 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     NSString *imagePath = [[NSBundle mainBundle] pathForResource:imageName ofType:nil];
     UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
     
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
+    CALayer *layer = [CALayer layer];
+    layer.frame = rect;
+    layer.contentsScale = [UIScreen mainScreen].scale;
+    layer.backgroundColor = [[UIColor clearColor] CGColor];
+    layer.contents = (id)[image CGImage];
+    [self.imageLayer addSublayer:layer];
     
     
-    CGContextSaveGState(contextRef);
-    
-    CGContextSetTextMatrix(contextRef, CGAffineTransformIdentity);
-    CGContextTranslateCTM(contextRef, 0, self.bounds.size.height);
-    CGContextScaleCTM(contextRef, 1.0, -1.0);
-    
-    CGContextClearRect(contextRef, rect);
-    CGContextDrawImage(contextRef, rect, image.CGImage);
-    
-    CGContextRestoreGState(contextRef);
+//    CGContextRef contextRef = UIGraphicsGetCurrentContext();
+//    
+//    
+//    CGContextSaveGState(contextRef);
+//    
+//    CGContextSetTextMatrix(contextRef, CGAffineTransformIdentity);
+//    CGContextTranslateCTM(contextRef, 0, self.bounds.size.height);
+//    CGContextScaleCTM(contextRef, 1.0, -1.0);
+//    
+//    CGContextClearRect(contextRef, rect);
+//    CGContextDrawImage(contextRef, rect, image.CGImage);
+//    
+//    CGContextRestoreGState(contextRef);
 }
 
 

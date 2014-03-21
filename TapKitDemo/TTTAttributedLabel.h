@@ -376,6 +376,8 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 
 @property (nonatomic, weak) NSArray *imageBricks;
 
+@property (nonatomic, strong) NSMutableArray *tmp;
+
 - (NSAttributedString *)parseMarkup:(NSAttributedString *)markup;
 
 @end
