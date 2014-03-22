@@ -812,9 +812,6 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
         
         // Draw image for this line
         
-        NSLog(@" ");
-        NSLog(@" ");
-        [self removeImageLayer];
         NSArray *runList = (__bridge NSArray *)(CTLineGetGlyphRuns(line));
         for ( int i=0; i<[runList count]; ++i ) {
             
@@ -856,9 +853,12 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
                 runBounds.origin.y = lineOrigin.y;
                 runBounds.origin.y -= runDescent;
                 
-                runBounds.origin.y += (self.height - rect.origin.y - rect.size.height);
+                //runBounds.origin.y += (self.height - rect.origin.y - rect.size.height);
                 
-                runBounds.origin.y += (self.font.ascender+self.font.descender - runBounds.size.height);
+                //runBounds.origin.y += (self.font.ascender+self.font.descender - runBounds.size.height);
+                
+                // flip
+                runBounds.origin.y = self.height - runBounds.origin.y;
                 
                 [self addImageLayer];
                 [self drawImage:(NSDictionary *)refCon inRect:runBounds];
@@ -1044,6 +1044,8 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
 {
     NSString *imageName = [brick objectForKey:@"image"];
     NSString *imagePath = [[NSBundle mainBundle] pathForResource:imageName ofType:nil];
+    NSData *imageData = [[NSData alloc] initWithContentsOfFile:imagePath];
+    
     UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
     
     CALayer *layer = [CALayer layer];
@@ -1052,21 +1054,12 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     layer.backgroundColor = [[UIColor clearColor] CGColor];
     layer.contents = (id)[image CGImage];
     [self.imageLayer addSublayer:layer];
-    
-    
-//    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-//    
-//    
-//    CGContextSaveGState(contextRef);
-//    
-//    CGContextSetTextMatrix(contextRef, CGAffineTransformIdentity);
-//    CGContextTranslateCTM(contextRef, 0, self.bounds.size.height);
-//    CGContextScaleCTM(contextRef, 1.0, -1.0);
-//    
-//    CGContextClearRect(contextRef, rect);
-//    CGContextDrawImage(contextRef, rect, image.CGImage);
-//    
-//    CGContextRestoreGState(contextRef);
+}
+
+- (BOOL)isGIFImage:(NSData *)data
+{
+    const char *buff = (const char *)[data bytes];
+    return ((buff[0]==0x47) && (buff[1]==0x49) && (buff[2]==0x46) && (buff[3]==0x38));
 }
 
 - (void)removeImageLayer
@@ -1312,7 +1305,9 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
         [super drawTextInRect:rect];
         return;
     }
-
+    
+    [self removeImageLayer];
+    
     NSAttributedString *originalAttributedText = nil;
 
     // Adjust the font size to fit width, if necessarry
@@ -1341,6 +1336,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
         CGContextScaleCTM(c, 1.0f, -1.0f);
 
         CFRange textRange = CFRangeMake(0, (CFIndex)[self.attributedText length]);
+        NSLog(@"%@", NSStringFromCGRect(rect));
 
         // First, get the text rect (which takes vertical centering into account)
         CGRect textRect = [self textRectForBounds:rect limitedToNumberOfLines:self.numberOfLines];

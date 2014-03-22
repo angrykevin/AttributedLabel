@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A2C40B318DDC62E00E7959A /* c.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0A2C40B218DDC62E00E7959A /* c.gif */; };
 		BC04C7EB172D66E900F9EB2A /* TKOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BC04C7EA172D66E900F9EB2A /* TKOperation.m */; };
 		BC04C7EE172D770600F9EB2A /* UIButtonAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = BC04C7ED172D770500F9EB2A /* UIButtonAdditions.m */; };
 		BC04C7F2172D82FB00F9EB2A /* TKSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = BC04C7F1172D82FB00F9EB2A /* TKSettings.m */; };
@@ -50,6 +51,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A2C40B218DDC62E00E7959A /* c.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = c.gif; sourceTree = "<group>"; };
 		BC04C7E8172D64F200F9EB2A /* TKObserverProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKObserverProtocol.h; sourceTree = "<group>"; };
 		BC04C7E9172D66E900F9EB2A /* TKOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKOperation.h; sourceTree = "<group>"; };
 		BC04C7EA172D66E900F9EB2A /* TKOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKOperation.m; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				BCBBF9FB18DBF1F20083ED02 /* TTTAttributedLabel.m */,
 				BCBBFA4618DC33A20083ED02 /* a.png */,
 				BCBBFA4718DC33A20083ED02 /* b.png */,
+				0A2C40B218DDC62E00E7959A /* c.gif */,
 				BCBBFA4818DC33A20083ED02 /* asd.png */,
 				BCBBFA4418DC1F600083ED02 /* emotion.plist */,
 				BCC6CEFF1717182B000A99CB /* TapKit */,
@@ -391,6 +394,7 @@
 				BCC6CEF5171714D5000A99CB /* Default-568h@2x.png in Resources */,
 				BCBBFA4518DC1F600083ED02 /* emotion.plist in Resources */,
 				BCBBFA4918DC33A20083ED02 /* a.png in Resources */,
+				0A2C40B318DDC62E00E7959A /* c.gif in Resources */,
 				BCC6CEF6171714D5000A99CB /* Default.png in Resources */,
 				BCC6CEF7171714D5000A99CB /* Default@2x.png in Resources */,
 				BCBBFA4B18DC33A20083ED02 /* asd.png in Resources */,

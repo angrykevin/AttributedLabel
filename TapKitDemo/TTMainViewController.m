@@ -16,13 +16,35 @@
     [super viewDidLoad];
     
     //NSString *text = @"HA[a]HB[asd]HC[b]HD";
-    NSString *text = @"[a]HA";
+    //NSString *text = @"[a]HA";
+    //[self singleLineWithText:text];
     
-    [self singleLineBeginWithText:text];
+    NSString *text = @"Yo[a]u might have immediately noticed the LCD font and thought of using this as a digital clock. Trust me, everybody does, but you can forget about that right away. The designer of this font did not have fixed width d[a]igital readouts in mind when creating this font.";
+    //NSString *text = @"Hell[a]o there.";
     
+    [self multiLineWithText:text];
 }
 
-- (void)singleLineBeginWithText:(NSString *)text
+- (void)multiLineWithText:(NSString *)text
+{
+    NSString *path = TKPathForBundleResource(nil, @"emotion.plist");
+    NSArray *array = [[NSArray alloc] initWithContentsOfFile:path];
+    
+    
+    TTTAttributedLabel *label = nil;
+    
+    label = [[TTTAttributedLabel alloc] init];
+    label.numberOfLines = 0;
+    label.imageBricks = array;
+    [label showBorderWithBlueColor];
+    [self.view addSubview:label];
+    label.font = [UIFont systemFontOfSize:16.0];
+    label.frame = CGRectMake(10.0, 30.0, 300.0, 150.0);
+    label.text = text;
+    _label8 = label;
+}
+
+- (void)singleLineWithText:(NSString *)text
 {
     NSString *path = TKPathForBundleResource(nil, @"emotion.plist");
     NSArray *array = [[NSArray alloc] initWithContentsOfFile:path];
@@ -107,23 +129,22 @@
 {
     [super viewDidAppear:animated];
     
-    [_label8 sizeToFit];
-    [_label12 sizeToFit];
-    [_label14 sizeToFit];
-    [_label15 sizeToFit];
-    [_label16 sizeToFit];
-    [_label18 sizeToFit];
-    [_label20 sizeToFit];
-    [_label32 sizeToFit];
     
-//    _label8.topY = 30.0 + 0*60.0;
-//    _label12.topY = 30.0 + 1*60.0;
-//    _label14.topY = 30.0 + 2*60.0;
-//    _label15.topY = 30.0 + 3*60.0;
-//    _label16.topY = 30.0 + 4*60.0;
-//    _label18.topY = 30.0 + 5*60.0;
-//    _label20.topY = 30.0 + 6*60.0;
-//    _label32.topY = 30.0 + 7*60.0;
+//    [_label8 sizeToFit];
+//    [_label12 sizeToFit];
+//    [_label14 sizeToFit];
+//    [_label15 sizeToFit];
+//    [_label16 sizeToFit];
+//    [_label18 sizeToFit];
+//    [_label20 sizeToFit];
+//    [_label32 sizeToFit];
+    
+    
+//    CGSize size = [TTTAttributedLabel sizeThatFitsAttributedString:_label8.attributedText
+//                                                   withConstraints:CGSizeMake(300.0, 10000.0)
+//                                            limitedToNumberOfLines:0];
+//    _label8.frame = CGRectMake(10.0, 30.0, 300.0, size.height);
+    
     
 }
 
