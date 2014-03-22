@@ -24,6 +24,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import <Availability.h>
+#import "TBGIFLayer.h"
 
 #define kTTTLineBreakWordWrapTextWidthScalingFactor (M_PI / M_E)
 
@@ -851,11 +852,11 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
                 CGFloat xOffset = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(runRef).location, NULL);
                 runBounds.origin.x = (lineOrigin.x + xOffset);
                 runBounds.origin.y = lineOrigin.y;
-                runBounds.origin.y -= runDescent;
+                runBounds.origin.y += runDescent;
                 
-                //runBounds.origin.y += (self.height - rect.origin.y - rect.size.height);
+                runBounds.origin.y -= (self.height - rect.origin.y - rect.size.height);
                 
-                //runBounds.origin.y += (self.font.ascender+self.font.descender - runBounds.size.height);
+                runBounds.origin.y -= (self.font.ascender+self.font.descender - runBounds.size.height);
                 
                 // flip
                 runBounds.origin.y = self.height - runBounds.origin.y;
@@ -1046,20 +1047,30 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     NSString *imagePath = [[NSBundle mainBundle] pathForResource:imageName ofType:nil];
     NSData *imageData = [[NSData alloc] initWithContentsOfFile:imagePath];
     
-    UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
+    if ( [imageData length]<4 ) {
+        return;
+    }
     
-    CALayer *layer = [CALayer layer];
-    layer.frame = rect;
-    layer.contentsScale = [UIScreen mainScreen].scale;
-    layer.backgroundColor = [[UIColor clearColor] CGColor];
-    layer.contents = (id)[image CGImage];
+    
+    CALayer *layer = nil;
+    
+    const char *buff = (const char *)[imageData bytes];
+    if ( (buff[0]==0x47) && (buff[1]==0x49) && (buff[2]==0x46) && (buff[3]==0x38) ) {
+        TBGIFLayer *gifLayer = [[TBGIFLayer alloc] init];
+        [gifLayer reloadWithData:imageData];
+        gifLayer.frame = rect;
+        gifLayer.contentsScale = [UIScreen mainScreen].scale;
+        [gifLayer startAnimating];
+        layer = gifLayer;
+    } else {
+        UIImage *image = [[UIImage alloc] initWithData:imageData];
+        layer = [CALayer layer];
+        layer.frame = rect;
+        layer.contentsScale = [UIScreen mainScreen].scale;
+        layer.backgroundColor = [[UIColor clearColor] CGColor];
+        layer.contents = (id)[image CGImage];
+    }
     [self.imageLayer addSublayer:layer];
-}
-
-- (BOOL)isGIFImage:(NSData *)data
-{
-    const char *buff = (const char *)[data bytes];
-    return ((buff[0]==0x47) && (buff[1]==0x49) && (buff[2]==0x46) && (buff[3]==0x38));
 }
 
 - (void)removeImageLayer

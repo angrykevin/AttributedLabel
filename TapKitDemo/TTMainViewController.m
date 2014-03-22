@@ -19,7 +19,7 @@
     //NSString *text = @"[a]HA";
     //[self singleLineWithText:text];
     
-    NSString *text = @"Yo[a]u might have immediately noticed the LCD font and thought of using this as a digital clock. Trust me, everybody does, but you can forget about that right away. The designer of this font did not have fixed width d[a]igital readouts in mind when creating this font.";
+    NSString *text = @"Yo[a]u might have immediately noticed the LCD font and thought of using this as a digital clock. Trust me, everybody does, but you can forget about that right away. The designer of this font did not have fixed width d[c]igital readouts in mind when creating this font.";
     //NSString *text = @"Hell[a]o there.";
     
     [self multiLineWithText:text];

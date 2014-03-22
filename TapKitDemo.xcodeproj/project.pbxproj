@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0A2C40B318DDC62E00E7959A /* c.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0A2C40B218DDC62E00E7959A /* c.gif */; };
+		0A2C410818DE18C400E7959A /* TBGIFLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2C410718DE18C400E7959A /* TBGIFLayer.m */; };
+		0A2C410A18DE19D300E7959A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2C410918DE19D300E7959A /* ImageIO.framework */; };
 		BC04C7EB172D66E900F9EB2A /* TKOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BC04C7EA172D66E900F9EB2A /* TKOperation.m */; };
 		BC04C7EE172D770600F9EB2A /* UIButtonAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = BC04C7ED172D770500F9EB2A /* UIButtonAdditions.m */; };
 		BC04C7F2172D82FB00F9EB2A /* TKSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = BC04C7F1172D82FB00F9EB2A /* TKSettings.m */; };
@@ -52,6 +54,9 @@
 
 /* Begin PBXFileReference section */
 		0A2C40B218DDC62E00E7959A /* c.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = c.gif; sourceTree = "<group>"; };
+		0A2C410618DE18C400E7959A /* TBGIFLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBGIFLayer.h; sourceTree = "<group>"; };
+		0A2C410718DE18C400E7959A /* TBGIFLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBGIFLayer.m; sourceTree = "<group>"; };
+		0A2C410918DE19D300E7959A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		BC04C7E8172D64F200F9EB2A /* TKObserverProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKObserverProtocol.h; sourceTree = "<group>"; };
 		BC04C7E9172D66E900F9EB2A /* TKOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKOperation.h; sourceTree = "<group>"; };
 		BC04C7EA172D66E900F9EB2A /* TKOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKOperation.m; sourceTree = "<group>"; };
@@ -137,6 +142,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A2C410A18DE19D300E7959A /* ImageIO.framework in Frameworks */,
 				BCBBFA0118DBF3450083ED02 /* QuartzCore.framework in Frameworks */,
 				BCBBF9FF18DBF3190083ED02 /* CoreText.framework in Frameworks */,
 				BC1EB6AA174CAF62009B5D76 /* MobileCoreServices.framework in Frameworks */,
@@ -273,6 +279,7 @@
 		BCC6CED317171466000A99CB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0A2C410918DE19D300E7959A /* ImageIO.framework */,
 				BCBBFA0018DBF3450083ED02 /* QuartzCore.framework */,
 				BCBBF9FE18DBF3190083ED02 /* CoreText.framework */,
 				BCC6CEFA17171537000A99CB /* Foundation.framework */,
@@ -294,6 +301,8 @@
 				BC768DE41745F48000F23945 /* TTMainViewController.m */,
 				BCBBF9FA18DBF1F20083ED02 /* TTTAttributedLabel.h */,
 				BCBBF9FB18DBF1F20083ED02 /* TTTAttributedLabel.m */,
+				0A2C410618DE18C400E7959A /* TBGIFLayer.h */,
+				0A2C410718DE18C400E7959A /* TBGIFLayer.m */,
 				BCBBFA4618DC33A20083ED02 /* a.png */,
 				BCBBFA4718DC33A20083ED02 /* b.png */,
 				0A2C40B218DDC62E00E7959A /* c.gif */,
@@ -413,6 +422,7 @@
 				BC1B948C17296B5E005C10D3 /* TKCoreCommon.m in Sources */,
 				BC1B949217296DBA005C10D3 /* TKCoreCompatibility.m in Sources */,
 				BC1B949517296F3C005C10D3 /* TKNAIManager.m in Sources */,
+				0A2C410818DE18C400E7959A /* TBGIFLayer.m in Sources */,
 				BCD4FE75172AC87A00A7E0A3 /* TKCoreUI.m in Sources */,
 				BCD4FE7B172AD50400A7E0A3 /* NSObjectAdditions.m in Sources */,
 				BCD4FE7E172ADFF900A7E0A3 /* NSArrayAdditions.m in Sources */,
