@@ -331,6 +331,18 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
 @dynamic text;
 @synthesize attributedText = _attributedText;
 
+- (instancetype)init
+{
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+    
+    [self commonInit];
+    
+    return self;
+}
+
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (!self) {
@@ -345,7 +357,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
 - (void)commonInit {
     self.userInteractionEnabled = YES;
     self.multipleTouchEnabled = NO;
-
+    
     self.textInsets = UIEdgeInsetsZero;
 
     self.links = [NSArray array];
@@ -800,59 +812,62 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
         
         // Draw image for this line
         
+        NSLog(@" ");
+        NSLog(@" ");
+        [self removeImageLayer];
         NSArray *runList = (__bridge NSArray *)(CTLineGetGlyphRuns(line));
         for ( int i=0; i<[runList count]; ++i ) {
             
             CTRunRef runRef = (__bridge CTRunRef)([runList objectAtIndex:i]);
             
-            CGRect runBounds = CGRectZero;
-            CGFloat runAscent = 0.0;
-            CGFloat runDescent = 0.0;
-            
             NSDictionary *attributes = (__bridge NSDictionary *)(CTRunGetAttributes(runRef));
-            //NSInteger superscriptStyle = [[attributes objectForKey:(id)kCTSuperscriptAttributeName] integerValue];
-            
-            runBounds.size.width = CTRunGetTypographicBounds(runRef, CFRangeMake(0, 0), &runAscent, &runDescent, NULL);
-            runBounds.size.height = runAscent + runDescent;
-            
-            CGFloat xOffset = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(runRef).location, NULL);
-            runBounds.origin.x = lineOrigin.x + xOffset;
-            runBounds.origin.y = lineOrigin.y;
-            runBounds.origin.y -= runDescent;
             
             CTRunDelegateRef delegateRef = (__bridge CTRunDelegateRef)([attributes valueForKey:(id)kCTRunDelegateAttributeName]);
             id refCon = (__bridge id)(CTRunDelegateGetRefCon( delegateRef ));
+            
+#ifdef DEBUG
+            CGFloat tmpAscent = 0.0;
+            CGFloat tmpDescent = 0.0;
+            CTRunGetTypographicBounds(runRef, CFRangeMake(0, 0), &tmpAscent, &tmpDescent, NULL);
+            NSLog(@"line: %@", NSStringFromCGPoint(lineOrigin));
+            if ( refCon==nil ) { // Text
+                NSLog(@"font run: %d %d\t font: %d %d %d",
+                      (int)(tmpAscent), (int)(tmpDescent),
+                      (int)(self.font.pointSize), (int)(self.font.ascender), (int)(self.font.descender));
+            } else { // Image
+                NSLog(@"image run: %d %d\t font: %d %d %d\t offset: %d",
+                      (int)(tmpAscent), (int)(tmpDescent),
+                      (int)(self.font.pointSize), (int)(self.font.ascender), (int)(self.font.descender),
+                      (int)((self.font.ascender+self.font.descender) - (tmpAscent+tmpDescent)));
+            }
+#endif
+            
             if ( refCon ) {
-                runBounds.origin.y = rect.size.height - runBounds.origin.y - runBounds.size.height;
-                if ( self.tmp==nil ) {
-                    self.tmp = [[NSMutableArray alloc] init];
-                }
-                NSDictionary *dict = @{ @"ref": refCon, @"rect": NSStringFromCGRect(runBounds) };
-                [self.tmp addObject:dict];
-                //[self drawImage:(NSDictionary *)refCon inRect:runBounds];
+                
+                CGRect runBounds = CGRectZero;
+                CGFloat runAscent = 0.0;
+                CGFloat runDescent = 0.0;
+                
+                runBounds.size.width = CTRunGetTypographicBounds(runRef, CFRangeMake(0, 0), &runAscent, &runDescent, NULL);
+                runBounds.size.height = runAscent + runDescent;
+                
+                CGFloat xOffset = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(runRef).location, NULL);
+                runBounds.origin.x = (lineOrigin.x + xOffset);
+                runBounds.origin.y = lineOrigin.y;
+                runBounds.origin.y -= runDescent;
+                
+                runBounds.origin.y += (self.height - rect.origin.y - rect.size.height);
+                
+                runBounds.origin.y += (self.font.ascender+self.font.descender - runBounds.size.height);
+                
+                [self addImageLayer];
+                [self drawImage:(NSDictionary *)refCon inRect:runBounds];
             }
         }
     }
 
     [self drawStrike:frame inRect:rect context:c];
     
-    
-    if ( self.imageLayer ) {
-        [self.imageLayer removeAllAnimations];
-        [self.imageLayer removeFromSuperlayer];
-        self.imageLayer = nil;
-    }
-    self.imageLayer = [CALayer layer];
-    self.imageLayer.contentsScale = [UIScreen mainScreen].scale;
-    self.imageLayer.frame = self.bounds;
-    self.imageLayer.backgroundColor = [[UIColor clearColor] CGColor];
-    [self.layer addSublayer:self.imageLayer];
-    
-    for ( NSDictionary *dict in self.tmp ) {
-        NSDictionary *ref = [dict objectForKey:@"ref"];
-        CGRect rect = CGRectFromString([dict objectForKey:@"rect"]);
-        [self drawImage:ref inRect:rect];
-    }
 
     CFRelease(frame);
     CFRelease(path);
@@ -865,7 +880,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     NSArray *lines = (__bridge NSArray *)CTFrameGetLines(frame);
     CGPoint origins[[lines count]];
     CTFrameGetLineOrigins(frame, CFRangeMake(0, 0), origins);
-
+    
     // Compensate for y-offset of text rect from vertical positioning
     CGFloat yOffset = 0.0f;
     if (self.verticalAlignment != TTTAttributedLabelVerticalAlignmentTop) {
@@ -1052,6 +1067,26 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
 //    CGContextDrawImage(contextRef, rect, image.CGImage);
 //    
 //    CGContextRestoreGState(contextRef);
+}
+
+- (void)removeImageLayer
+{
+    if ( self.imageLayer ) {
+        [self.imageLayer removeAllAnimations];
+        [self.imageLayer removeFromSuperlayer];
+        self.imageLayer = nil;
+    }
+}
+
+- (void)addImageLayer
+{
+    if ( self.imageLayer==nil ) {
+        self.imageLayer = [CALayer layer];
+        self.imageLayer.contentsScale = [UIScreen mainScreen].scale;
+        self.imageLayer.frame = self.bounds;
+        self.imageLayer.backgroundColor = [[UIColor clearColor] CGColor];
+        [self.layer addSublayer:self.imageLayer];
+    }
 }
 
 

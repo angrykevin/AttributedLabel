@@ -11,7 +11,14 @@
 
 @interface TTMainViewController : UIViewController {
     
-    TTTAttributedLabel *_label;
+    TTTAttributedLabel *_label8;
+    TTTAttributedLabel *_label12;
+    TTTAttributedLabel *_label14;
+    TTTAttributedLabel *_label15;
+    TTTAttributedLabel *_label16;
+    TTTAttributedLabel *_label18;
+    TTTAttributedLabel *_label20;
+    TTTAttributedLabel *_label32;
     
 }
 
