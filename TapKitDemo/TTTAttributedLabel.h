@@ -370,8 +370,6 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 
 @property (nonatomic, assign) BOOL ignoreImage;
 
-@property (nonatomic, strong) NSArray *imageList;
-
 @property (nonatomic, strong) CALayer *imageLayer;
 
 @property (nonatomic, weak) NSArray *imageBricks;
