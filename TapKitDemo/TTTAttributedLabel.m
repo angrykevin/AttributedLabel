@@ -852,14 +852,19 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
                 CGFloat xOffset = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(runRef).location, NULL);
                 runBounds.origin.x = (lineOrigin.x + xOffset);
                 runBounds.origin.y = lineOrigin.y;
-                runBounds.origin.y += runDescent;
                 
-                runBounds.origin.y -= (self.height - rect.origin.y - rect.size.height);
-                
-                runBounds.origin.y -= (self.font.ascender+self.font.descender - runBounds.size.height);
+                runBounds.origin.y += (self.height - rect.origin.y - rect.size.height);
                 
                 // flip
                 runBounds.origin.y = self.height - runBounds.origin.y;
+                
+                runBounds.origin.y -= (runAscent - runDescent);
+                
+//
+//                
+//                runBounds.origin.y -= (self.font.ascender+self.font.descender - runBounds.size.height);
+                
+                
                 
                 [self addImageLayer];
                 [self drawImage:(NSDictionary *)refCon inRect:runBounds];
@@ -1347,7 +1352,6 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
         CGContextScaleCTM(c, 1.0f, -1.0f);
 
         CFRange textRange = CFRangeMake(0, (CFIndex)[self.attributedText length]);
-        NSLog(@"%@", NSStringFromCGRect(rect));
 
         // First, get the text rect (which takes vertical centering into account)
         CGRect textRect = [self textRectForBounds:rect limitedToNumberOfLines:self.numberOfLines];

@@ -19,8 +19,9 @@
     //NSString *text = @"[a]HA";
     //[self singleLineWithText:text];
     
-    NSString *text = @"Yo[a]u might have immediately noticed the LCD font and thought of using this as a digital clock. Trust me, everybody does, but you can forget about that right away. The designer of this font did not have fixed width d[c]igital readouts in mind when creating this font.";
+    //NSString *text = @"T[a]o get the most out of this Core Text tutorial, you need to know the basics of iOS d[c]evelopment first. If you are new to iOS d[asd]evelopment, you should check out s[b]ome of the other tutorials on this site first.";
     //NSString *text = @"Hell[a]o there.";
+    NSString *text = @"[a]";
     
     [self multiLineWithText:text];
 }
@@ -39,7 +40,7 @@
     [label showBorderWithBlueColor];
     [self.view addSubview:label];
     label.font = [UIFont systemFontOfSize:16.0];
-    label.frame = CGRectMake(10.0, 30.0, 300.0, 150.0);
+    //label.frame = CGRectMake(10.0, 30.0, 300.0, 150.0);
     label.text = text;
     _label8 = label;
 }
@@ -140,10 +141,10 @@
 //    [_label32 sizeToFit];
     
     
-//    CGSize size = [TTTAttributedLabel sizeThatFitsAttributedString:_label8.attributedText
-//                                                   withConstraints:CGSizeMake(300.0, 10000.0)
-//                                            limitedToNumberOfLines:0];
-//    _label8.frame = CGRectMake(10.0, 30.0, 300.0, size.height);
+    CGSize size = [TTTAttributedLabel sizeThatFitsAttributedString:_label8.attributedText
+                                                   withConstraints:CGSizeMake(300.0, 10000.0)
+                                            limitedToNumberOfLines:0];
+    _label8.frame = CGRectMake(10.0, 30.0, 300.0, size.height);
     
     
 }

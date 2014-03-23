@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A190AA918DEB29500675252 /* d.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0A190AA818DEB29500675252 /* d.gif */; };
 		0A2C40B318DDC62E00E7959A /* c.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0A2C40B218DDC62E00E7959A /* c.gif */; };
 		0A2C410818DE18C400E7959A /* TBGIFLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2C410718DE18C400E7959A /* TBGIFLayer.m */; };
 		0A2C410A18DE19D300E7959A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2C410918DE19D300E7959A /* ImageIO.framework */; };
@@ -53,6 +54,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A190AA818DEB29500675252 /* d.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = d.gif; sourceTree = "<group>"; };
 		0A2C40B218DDC62E00E7959A /* c.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = c.gif; sourceTree = "<group>"; };
 		0A2C410618DE18C400E7959A /* TBGIFLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBGIFLayer.h; sourceTree = "<group>"; };
 		0A2C410718DE18C400E7959A /* TBGIFLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBGIFLayer.m; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				BCBBFA4618DC33A20083ED02 /* a.png */,
 				BCBBFA4718DC33A20083ED02 /* b.png */,
 				0A2C40B218DDC62E00E7959A /* c.gif */,
+				0A190AA818DEB29500675252 /* d.gif */,
 				BCBBFA4818DC33A20083ED02 /* asd.png */,
 				BCBBFA4418DC1F600083ED02 /* emotion.plist */,
 				BCC6CEFF1717182B000A99CB /* TapKit */,
@@ -405,6 +408,7 @@
 				BCBBFA4918DC33A20083ED02 /* a.png in Resources */,
 				0A2C40B318DDC62E00E7959A /* c.gif in Resources */,
 				BCC6CEF6171714D5000A99CB /* Default.png in Resources */,
+				0A190AA918DEB29500675252 /* d.gif in Resources */,
 				BCC6CEF7171714D5000A99CB /* Default@2x.png in Resources */,
 				BCBBFA4B18DC33A20083ED02 /* asd.png in Resources */,
 			);

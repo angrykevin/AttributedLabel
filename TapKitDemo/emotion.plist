@@ -50,5 +50,17 @@
 		<key>image</key>
 		<string>c.gif</string>
 	</dict>
+	<dict>
+		<key>name</key>
+		<string>d</string>
+		<key>width</key>
+		<string>136</string>
+		<key>ascent</key>
+		<string>114</string>
+		<key>descent</key>
+		<string>0</string>
+		<key>image</key>
+		<string>d.gif</string>
+	</dict>
 </array>
 </plist>
