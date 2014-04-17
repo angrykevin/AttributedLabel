@@ -359,6 +359,8 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     self.userInteractionEnabled = YES;
     self.multipleTouchEnabled = NO;
     
+    self.imageVerticalAlignment = TTTAttributedLabelVerticalAlignmentBottom;
+    
     self.textInsets = UIEdgeInsetsZero;
 
     self.links = [NSArray array];
@@ -811,34 +813,17 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
             CTLineDraw(line, c);
         }
         
-        // Draw image for this line
         
-        NSArray *runList = (__bridge NSArray *)(CTLineGetGlyphRuns(line));
+        // Draw image for this line
+        NSArray *runList = ((__bridge NSArray *)CTLineGetGlyphRuns(line));
         for ( int i=0; i<[runList count]; ++i ) {
             
-            CTRunRef runRef = (__bridge CTRunRef)([runList objectAtIndex:i]);
+            CTRunRef runRef = ((__bridge CTRunRef)[runList objectAtIndex:i]);
             
-            NSDictionary *attributes = (__bridge NSDictionary *)(CTRunGetAttributes(runRef));
+            NSDictionary *attributes = ((__bridge NSDictionary *)CTRunGetAttributes(runRef));
             
-            CTRunDelegateRef delegateRef = (__bridge CTRunDelegateRef)([attributes valueForKey:(id)kCTRunDelegateAttributeName]);
-            id refCon = (__bridge id)(CTRunDelegateGetRefCon( delegateRef ));
-            
-#ifdef DEBUG
-            CGFloat tmpAscent = 0.0;
-            CGFloat tmpDescent = 0.0;
-            CTRunGetTypographicBounds(runRef, CFRangeMake(0, 0), &tmpAscent, &tmpDescent, NULL);
-            NSLog(@"line: %@", NSStringFromCGPoint(lineOrigin));
-            if ( refCon==nil ) { // Text
-                NSLog(@"font run: %d %d\t font: %d %d %d",
-                      (int)(tmpAscent), (int)(tmpDescent),
-                      (int)(self.font.pointSize), (int)(self.font.ascender), (int)(self.font.descender));
-            } else { // Image
-                NSLog(@"image run: %d %d\t font: %d %d %d\t offset: %d",
-                      (int)(tmpAscent), (int)(tmpDescent),
-                      (int)(self.font.pointSize), (int)(self.font.ascender), (int)(self.font.descender),
-                      (int)((self.font.ascender+self.font.descender) - (tmpAscent+tmpDescent)));
-            }
-#endif
+            CTRunDelegateRef delegateRef = ((__bridge CTRunDelegateRef)[attributes valueForKey:((id)kCTRunDelegateAttributeName)]);
+            id refCon = ((__bridge id)CTRunDelegateGetRefCon(delegateRef));
             
             if ( refCon ) {
                 
@@ -852,22 +837,26 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
                 CGFloat xOffset = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(runRef).location, NULL);
                 runBounds.origin.x = (lineOrigin.x + xOffset);
                 runBounds.origin.y = lineOrigin.y;
+                runBounds.origin.y -= runDescent;
                 
+                // add vertical offset
                 runBounds.origin.y += (self.height - rect.origin.y - rect.size.height);
                 
-                // flip
+                // flip, this operation will make image run beneath this line
                 runBounds.origin.y = self.height - runBounds.origin.y;
                 
-                runBounds.origin.y -= (runAscent - runDescent);
-                
-//
-//                
-//                runBounds.origin.y -= (self.font.ascender+self.font.descender - runBounds.size.height);
-                
-                
+                // move it up
+                if ( self.imageVerticalAlignment==TTTAttributedLabelVerticalAlignmentBottom ) {
+                    runBounds.origin.y -= (runAscent + runDescent);
+                } else if ( self.imageVerticalAlignment==TTTAttributedLabelVerticalAlignmentCenter ) {
+                    runBounds.origin.y -= self.font.capHeight;
+                    runBounds.origin.y += ((self.font.capHeight - (runAscent + runDescent)) / 2.0);
+                } else if ( self.imageVerticalAlignment==TTTAttributedLabelVerticalAlignmentTop ) {
+                    runBounds.origin.y -= self.font.capHeight;
+                }
                 
                 [self addImageLayer];
-                [self drawImage:(NSDictionary *)refCon inRect:runBounds];
+                [self drawImage:((NSDictionary *)refCon) inRect:runBounds];
             }
         }
     }
@@ -1046,9 +1035,9 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     }
 }
 
-- (void)drawImage:(NSDictionary *)brick inRect:(CGRect)rect
+- (void)drawImage:(NSDictionary *)attr inRect:(CGRect)rect
 {
-    NSString *imageName = [brick objectForKey:@"image"];
+    NSString *imageName = [attr objectForKey:@"image"];
     NSString *imagePath = [[NSBundle mainBundle] pathForResource:imageName ofType:nil];
     NSData *imageData = [[NSData alloc] initWithContentsOfFile:imagePath];
     
@@ -1059,7 +1048,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     
     CALayer *layer = nil;
     
-    const char *buff = (const char *)[imageData bytes];
+    const char *buff = ((const char *)[imageData bytes]);
     if ( (buff[0]==0x47) && (buff[1]==0x49) && (buff[2]==0x46) && (buff[3]==0x38) ) {
         TBGIFLayer *gifLayer = [[TBGIFLayer alloc] init];
         [gifLayer reloadWithData:imageData];
@@ -1073,7 +1062,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
         layer.frame = rect;
         layer.contentsScale = [UIScreen mainScreen].scale;
         layer.backgroundColor = [[UIColor clearColor] CGColor];
-        layer.contents = (id)[image CGImage];
+        layer.contents = ((id)[image CGImage]);
     }
     [self.imageLayer addSublayer:layer];
 }
@@ -1089,7 +1078,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
 
 - (void)addImageLayer
 {
-    if ( self.imageLayer==nil ) {
+    if ( !(self.imageLayer) ) {
         self.imageLayer = [CALayer layer];
         self.imageLayer.contentsScale = [UIScreen mainScreen].scale;
         self.imageLayer.frame = self.bounds;
@@ -1130,8 +1119,8 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
             && ([result length]>2))
         {
             NSString *name = [result substringWithRange:NSMakeRange(1, [result length]-2)];
-            NSDictionary *brick = [self imageBrickForName:name];
-            if ( brick ) {
+            NSDictionary *attr = [self imageAttrForName:name];
+            if ( attr ) {
                 CTRunDelegateCallbacks callbacks;
                 callbacks.version = kCTRunDelegateVersion1;
                 callbacks.dealloc = deallocCallback;
@@ -1139,10 +1128,10 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
                 callbacks.getDescent = descentCallback;
                 callbacks.getWidth = widthCallback;
                 
-                NSDictionary *attr = [brick copy];
+                NSDictionary *dict = [attr copy];
                 
-                CTRunDelegateRef delegateRef = CTRunDelegateCreate(&callbacks, ((__bridge_retained void *)attr));
-                NSDictionary *attributeDictionary = [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)delegateRef, (NSString *)kCTRunDelegateAttributeName, nil];
+                CTRunDelegateRef delegateRef = CTRunDelegateCreate(&callbacks, ((__bridge_retained void *)dict));
+                NSDictionary *attributeDictionary = [NSDictionary dictionaryWithObjectsAndKeys:((__bridge id)delegateRef), ((NSString *)kCTRunDelegateAttributeName), nil];
                 NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@" " attributes:attributeDictionary];
                 [string replaceCharactersInRange:[chunk range] withAttributedString:attributedString];
                 CFRelease(delegateRef);
@@ -1154,14 +1143,22 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     
 }
 
-- (NSDictionary *)imageBrickForName:(NSString *)name
+- (NSDictionary *)imageAttrForName:(NSString *)name
 {
-    for ( NSDictionary *brick in self.imageBricks ) {
-        if ( [[brick objectForKey:@"name"] isEqualToString:name] ) {
-            return brick;
+    for ( NSDictionary *attr in self.imageAttrs ) {
+        if ( [[attr objectForKey:@"name"] isEqualToString:name] ) {
+            return attr;
         }
     }
     return nil;
+}
+
+
+#pragma mark -
+
+- (void)reloadAttributes
+{
+    self.text = self.originalText;
 }
 
 #pragma mark - TTTAttributedLabel
@@ -1170,11 +1167,12 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     NSParameterAssert(!text || [text isKindOfClass:[NSAttributedString class]] || [text isKindOfClass:[NSString class]]);
 
     if ([text isKindOfClass:[NSString class]]) {
+        _originalText = [text copy];
         [self setText:text afterInheritingLabelAttributesAndConfiguringWithBlock:nil];
         return;
     }
     
-    if ( (self.ignoreImage) || ([self.imageBricks count]<=0) ) {
+    if ( (self.ignoreImage) || ([self.imageAttrs count]<=0) ) {
         self.attributedText = text;
     } else {
         self.attributedText = [self parseMarkup:text];
@@ -1381,7 +1379,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
         } else {
             [self drawFramesetter:[self framesetter] attributedString:self.renderedAttributedText textRange:textRange inRect:textRect context:c];
         }
-
+        
         // If we adjusted the font size, set it back to its original size
         if (originalAttributedText) {
             // Use ivar directly to avoid clearing out framesetter and renderedAttributedText

@@ -56,7 +56,7 @@
     
     label = [[TTTAttributedLabel alloc] init];
     label.numberOfLines = 0;
-    label.imageBricks = array;
+    label.imageAttrs = array;
     [label showBorderWithBlueColor];
     [self.view addSubview:label];
     label.font = [UIFont systemFontOfSize:16.0];
@@ -79,7 +79,7 @@
     TTTAttributedLabel *label = nil;
     
     label = [[TTTAttributedLabel alloc] init];
-    label.imageBricks = array;
+    label.imageAttrs = array;
     [label showBorderWithBlueColor];
     [self.view addSubview:label];
     label.font = [UIFont systemFontOfSize:8.0];
@@ -88,7 +88,7 @@
     _label8 = label;
     
     label = [[TTTAttributedLabel alloc] init];
-    label.imageBricks = array;
+    label.imageAttrs = array;
     [label showBorderWithBlueColor];
     [self.view addSubview:label];
     label.font = [UIFont systemFontOfSize:12.0];
@@ -97,7 +97,7 @@
     _label12 = label;
     
     label = [[TTTAttributedLabel alloc] init];
-    label.imageBricks = array;
+    label.imageAttrs = array;
     [label showBorderWithBlueColor];
     [self.view addSubview:label];
     label.font = [UIFont systemFontOfSize:14.0];
@@ -106,7 +106,7 @@
     _label14 = label;
     
     label = [[TTTAttributedLabel alloc] init];
-    label.imageBricks = array;
+    label.imageAttrs = array;
     [label showBorderWithBlueColor];
     [self.view addSubview:label];
     label.font = [UIFont systemFontOfSize:15.0];
@@ -115,7 +115,7 @@
     _label15 = label;
     
     label = [[TTTAttributedLabel alloc] init];
-    label.imageBricks = array;
+    label.imageAttrs = array;
     [label showBorderWithBlueColor];
     [self.view addSubview:label];
     label.font = [UIFont systemFontOfSize:16.0];
@@ -124,7 +124,7 @@
     _label16 = label;
     
     label = [[TTTAttributedLabel alloc] init];
-    label.imageBricks = array;
+    label.imageAttrs = array;
     [label showBorderWithBlueColor];
     [self.view addSubview:label];
     label.font = [UIFont systemFontOfSize:18.0];
@@ -133,7 +133,7 @@
     _label18 = label;
     
     label = [[TTTAttributedLabel alloc] init];
-    label.imageBricks = array;
+    label.imageAttrs = array;
     [label showBorderWithBlueColor];
     [self.view addSubview:label];
     label.font = [UIFont systemFontOfSize:20.0];
@@ -142,7 +142,7 @@
     _label20 = label;
     
     label = [[TTTAttributedLabel alloc] init];
-    label.imageBricks = array;
+    label.imageAttrs = array;
     [label showBorderWithBlueColor];
     [self.view addSubview:label];
     label.font = [UIFont systemFontOfSize:32.0];
